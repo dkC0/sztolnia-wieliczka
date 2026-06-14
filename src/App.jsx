@@ -27,7 +27,7 @@ export default function App() {
       <a href="#main" className="skip-link">Przejdź do treści</a>
       <ScrollToHash />
       <GrainOverlay />
-      <Nav key={location.pathname} />
+      <Nav />
       <main id="main" key={location.pathname} className="page-fade">
         <Routes>
           <Route path="/" element={<Home />} />
