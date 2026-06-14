@@ -1,0 +1,266 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --tunnel: #15120F;
+  --salt: #EDE7DD;
+  --stone: #6B645B;
+  --copper: #C9743A;
+  --amber: #E8A23D;
+  --beet: #7A2E2A;
+  --salt-line: rgba(237, 231, 221, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background-color: var(--salt);
+  color: var(--tunnel);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--copper);
+  color: var(--salt);
+}
+
+/* Focus states */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--copper);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--copper);
+  color: var(--salt);
+  padding: 0.75rem 1.25rem;
+  z-index: 100;
+  font-weight: 600;
+  border-radius: 0 0 6px 0;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* Mineral grain — fine irregular speckle, not film grain */
+.salt-grain {
+  position: relative;
+}
+.salt-grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* Eyebrow / UI label */
+.label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+/* Section spacing rhythm */
+.section-pad {
+  padding-top: clamp(4rem, 11vw, 10rem);
+  padding-bottom: clamp(4rem, 11vw, 10rem);
+}
+
+/* Accent italic voice — the narrative line */
+.accent-line {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Page transition — soft cross-fade only */
+@keyframes page-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.page-fade {
+  animation: page-fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-fade { animation: none; }
+}
+
+/* Dark "Tunnel" section treatment */
+.section-dark {
+  position: relative;
+  background-color: var(--tunnel);
+  color: var(--salt);
+}
+.section-dark .label {
+  color: var(--stone);
+}
+
+/* "Cellar" treatment — for the distillery, warmed tunnel-black */
+.section-cellar {
+  position: relative;
+  background-color: #1C1611;
+  color: var(--salt);
+}
+
+/* Full-bleed photo backdrop with gradient overlay for dark sections */
+.photo-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(21,18,15,0.2) 0%, rgba(21,18,15,0.55) 55%, rgba(21,18,15,0.95) 100%);
+}
+.photo-overlay-side {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(21,18,15,0.78) 0%, rgba(21,18,15,0.18) 50%, rgba(21,18,15,0.78) 100%);
+}
+
+/* Cool-toned "descent" image treatment */
+.cool-grade {
+  filter: saturate(0.85) brightness(0.92) contrast(1.04);
+}
+
+/* Card / image hover — descent half: subtle brightness only, no glow */
+.cool-hover {
+  transition: transform 0.5s cubic-bezier(0.25,0.1,0.25,1), filter 0.5s cubic-bezier(0.25,0.1,0.25,1);
+}
+.cool-hover:hover, .cool-hover:focus-within {
+  transform: scale(1.012);
+  filter: brightness(1.05);
+}
+
+/* Card / image hover — arrival half: warm ember glow */
+.warm-hover {
+  transition: transform 0.4s cubic-bezier(0.25,0.1,0.25,1), box-shadow 0.4s cubic-bezier(0.25,0.1,0.25,1), filter 0.4s cubic-bezier(0.25,0.1,0.25,1);
+}
+.warm-hover:hover, .warm-hover:focus-within {
+  transform: scale(1.015);
+  filter: brightness(1.04);
+  box-shadow: 0 0 32px rgba(201, 116, 58, 0.3);
+}
+
+/* Salt-crystal underline hover for links (descent) */
+.salt-link {
+  position: relative;
+  text-decoration: none;
+}
+.salt-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 1px;
+  background: var(--salt);
+  transition: width 0.3s cubic-bezier(0.25,0.1,0.25,1);
+}
+.salt-link:hover::after,
+.salt-link:focus-visible::after {
+  width: 100%;
+}
+
+/* Ember underline hover for links (arrival) */
+.ember-link {
+  position: relative;
+  text-decoration: none;
+}
+.ember-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 1px;
+  background: var(--copper);
+  transition: width 0.3s cubic-bezier(0.25,0.1,0.25,1);
+}
+.ember-link:hover::after,
+.ember-link:focus-visible::after {
+  width: 100%;
+}
+
+/* Horizontal scroll-snap row */
+.snap-row {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 1.25rem;
+}
+.snap-row > * {
+  scroll-snap-align: start;
+  flex: 0 0 82%;
+}
+@media (min-width: 640px) {
+  .snap-row > * {
+    flex: 0 0 42%;
+  }
+}
+@media (min-width: 1024px) {
+  .snap-row > * {
+    flex: 0 0 32%;
+  }
+}
+.snap-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Slow amber glow pulse — distillery section only */
+@keyframes amber-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.06); }
+}
+.amber-glow {
+  animation: amber-pulse 9s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .amber-glow { animation: none; opacity: 0.45; }
+}
+
+/* Ensure inputs don't trigger iOS zoom */
+input, textarea, select {
+  font-size: 16px;
+}
