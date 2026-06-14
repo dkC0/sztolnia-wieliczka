@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 const LINKS = [
   { to: '/menu', label: 'Menu' },
@@ -12,6 +12,7 @@ const LINKS = [
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -20,9 +21,24 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Safety net: always close the overlay on navigation, even if a click
+  // handler is missed (e.g. tapping the logo or browser back/forward).
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    setOpen(false);
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    if (open) {
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    };
   }, [open]);
 
   const solid = scrolled || open;
@@ -93,9 +109,10 @@ export default function Nav() {
 
       {/* Mobile full-screen overlay */}
       <div
-        className={`md:hidden fixed inset-0 top-16 bg-tunnel transition-opacity duration-400 ease-descent ${
-          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        className={`md:hidden fixed inset-0 top-16 bg-tunnel transition-opacity duration-400 ease-descent z-40 ${
+          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 invisible pointer-events-none'
         }`}
+        aria-hidden={!open}
       >
         <div className="px-6 py-10 flex flex-col gap-1 h-full">
           {LINKS.map((l, i) => (
